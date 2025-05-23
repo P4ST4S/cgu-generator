@@ -44,11 +44,3 @@ export type FormData = {
   services: Services;
   jurisdiction: Jurisdiction;
 };
-
-export type FormData = {
-  siteName: string;
-  serviceType: ServiceType;
-  collectedData: CollectedData;
-  services: Services;
-  jurisdiction: Jurisdiction;
-};

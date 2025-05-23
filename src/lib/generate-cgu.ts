@@ -1,26 +1,22 @@
-import { CGUFormData, ServiceType, Jurisdiction } from './types';
+import { CGUFormData, ServiceType, Jurisdiction } from "./types";
 
 export function generateCGU(data: CGUFormData): string {
-  const {
-    siteName,
-    serviceType,
-    collectedData,
-    services,
-    jurisdiction
-  } = data;
+  const { siteName, serviceType, collectedData, services, jurisdiction } = data;
 
   const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()} ${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
+  const formattedDate = `${currentDate.getDate()} ${getMonthName(
+    currentDate.getMonth()
+  )} ${currentDate.getFullYear()}`;
 
   // Section des données collectées
   const dataCollectionText = generateDataCollectionSection(collectedData);
-  
+
   // Section des services utilisés
   const servicesText = generateServicesSection(services);
-  
+
   // Section juridiction
   const jurisdictionText = generateJurisdictionSection(jurisdiction);
-  
+
   // Section type de service
   const serviceTypeText = generateServiceTypeSection(serviceType);
 
@@ -74,7 +70,9 @@ export function generateCGU(data: CGUFormData): string {
   <p>En accédant ou en utilisant ${siteName}, vous acceptez d'être lié par ces Conditions Générales d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre service.</p>
   
   <h2>2. Description du Service</h2>
-  <p>${siteName} est un ${serviceTypeText} qui permet aux utilisateurs de ${getServiceDescription(serviceType)}.</p>
+  <p>${siteName} est un ${serviceTypeText} qui permet aux utilisateurs de ${getServiceDescription(
+    serviceType
+  )}.</p>
   
   <h2>3. Inscription et Compte</h2>
   <p>Pour utiliser certaines fonctionnalités de notre service, vous pourriez devoir créer un compte. Vous êtes responsable de maintenir la confidentialité de vos informations de connexion et de toutes les activités qui se produisent sous votre compte.</p>
@@ -111,8 +109,18 @@ export function generateCGU(data: CGUFormData): string {
 // Helpers
 function getMonthName(month: number): string {
   const months = [
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+    "janvier",
+    "février",
+    "mars",
+    "avril",
+    "mai",
+    "juin",
+    "juillet",
+    "août",
+    "septembre",
+    "octobre",
+    "novembre",
+    "décembre",
   ];
   return months[month];
 }
@@ -120,54 +128,74 @@ function getMonthName(month: number): string {
 function getServiceDescription(serviceType: ServiceType): string {
   switch (serviceType) {
     case ServiceType.BLOG:
-      return 'consulter et interagir avec du contenu éditorial';
+      return "consulter et interagir avec du contenu éditorial";
     case ServiceType.ECOMMERCE:
-      return 'acheter des produits en ligne';
+      return "acheter des produits en ligne";
     case ServiceType.SAAS:
-      return 'utiliser notre solution logicielle en ligne';
+      return "utiliser notre solution logicielle en ligne";
     case ServiceType.MOBILE_APP:
-      return 'utiliser notre application mobile et ses fonctionnalités';
+      return "utiliser notre application mobile et ses fonctionnalités";
     default:
-      return 'utiliser nos services';
+      return "utiliser nos services";
   }
 }
 
-function generateDataCollectionSection(collectedData: FormData['collectedData']): string {
+function generateDataCollectionSection(
+  collectedData: CGUFormData["collectedData"]
+): string {
   const collectedItems = [];
-  
-  if (collectedData.email) collectedItems.push('adresses email');
-  if (collectedData.ip) collectedItems.push('adresses IP');
-  if (collectedData.creditCard) collectedItems.push('informations de carte bancaire');
-  if (collectedData.phone) collectedItems.push('numéros de téléphone');
-  if (collectedData.location) collectedItems.push('données de localisation');
-  if (collectedData.browsing) collectedItems.push('données de navigation');
-  
+
+  if (collectedData.email) collectedItems.push("adresses email");
+  if (collectedData.ip) collectedItems.push("adresses IP");
+  if (collectedData.creditCard)
+    collectedItems.push("informations de carte bancaire");
+  if (collectedData.phone) collectedItems.push("numéros de téléphone");
+  if (collectedData.location) collectedItems.push("données de localisation");
+  if (collectedData.browsing) collectedItems.push("données de navigation");
+
   if (collectedItems.length === 0) {
-    return '<p>Nous ne collectons aucune donnée personnelle à travers notre service.</p>';
+    return "<p>Nous ne collectons aucune donnée personnelle à travers notre service.</p>";
   }
-  
+
   return `
-    <p>Nous collectons les données personnelles suivantes : ${collectedItems.join(', ')}.</p>
+    <p>Nous collectons les données personnelles suivantes : ${collectedItems.join(
+      ", "
+    )}.</p>
     <p>Ces données sont utilisées uniquement pour fournir et améliorer notre service. Nous ne vendrons ni ne louerons vos informations personnelles à des tiers sans votre consentement explicite, sauf si la loi l'exige.</p>
-    ${collectedData.creditCard ? '<p>Les informations de paiement sont traitées par des prestataires de services de paiement sécurisés et ne sont pas stockées sur nos serveurs.</p>' : ''}
+    ${
+      collectedData.creditCard
+        ? "<p>Les informations de paiement sont traitées par des prestataires de services de paiement sécurisés et ne sont pas stockées sur nos serveurs.</p>"
+        : ""
+    }
   `;
 }
 
-function generateServicesSection(services: FormData['services']): string {
+function generateServicesSection(services: CGUFormData["services"]): string {
   const serviceItems = [];
-  
-  if (services.stripe) serviceItems.push('Stripe pour le traitement des paiements');
-  if (services.googleAnalytics) serviceItems.push('Google Analytics pour l\'analyse du trafic');
-  if (services.facebook) serviceItems.push('Facebook pour les fonctionnalités de partage social et la publicité');
-  if (services.aws) serviceItems.push('Amazon Web Services pour l\'hébergement et le stockage');
-  if (services.advertising) serviceItems.push('des réseaux publicitaires pour afficher des annonces pertinentes');
-  
+
+  if (services.stripe)
+    serviceItems.push("Stripe pour le traitement des paiements");
+  if (services.googleAnalytics)
+    serviceItems.push("Google Analytics pour l'analyse du trafic");
+  if (services.facebook)
+    serviceItems.push(
+      "Facebook pour les fonctionnalités de partage social et la publicité"
+    );
+  if (services.aws)
+    serviceItems.push("Amazon Web Services pour l'hébergement et le stockage");
+  if (services.advertising)
+    serviceItems.push(
+      "des réseaux publicitaires pour afficher des annonces pertinentes"
+    );
+
   if (serviceItems.length === 0) {
-    return '<p>Notre service n\'utilise aucun service tiers pour son fonctionnement.</p>';
+    return "<p>Notre service n'utilise aucun service tiers pour son fonctionnement.</p>";
   }
-  
+
   return `
-    <p>Notre service utilise les services tiers suivants : ${serviceItems.join(', ')}.</p>
+    <p>Notre service utilise les services tiers suivants : ${serviceItems.join(
+      ", "
+    )}.</p>
     <p>Ces services tiers peuvent collecter et traiter vos données selon leurs propres politiques de confidentialité. Nous vous encourageons à consulter les politiques de confidentialité de ces services tiers.</p>
   `;
 }
@@ -204,14 +232,14 @@ function generateJurisdictionSection(jurisdiction: Jurisdiction): string {
 function generateServiceTypeSection(serviceType: ServiceType): string {
   switch (serviceType) {
     case ServiceType.BLOG:
-      return 'blog';
+      return "blog";
     case ServiceType.ECOMMERCE:
-      return 'site e-commerce';
+      return "site e-commerce";
     case ServiceType.SAAS:
-      return 'service SaaS (Software as a Service)';
+      return "service SaaS (Software as a Service)";
     case ServiceType.MOBILE_APP:
-      return 'application mobile';
+      return "application mobile";
     default:
-      return 'service';
+      return "service";
   }
 }

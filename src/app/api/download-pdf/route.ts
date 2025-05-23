@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     }
 
     // Lancer un navigateur Puppeteer
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     // Définir le contenu de la page
