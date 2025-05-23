@@ -84,9 +84,9 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white shadow-sm rounded-lg p-6">
+      <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
         <div className="flex justify-between mb-4 flex-wrap gap-2">
-          <h2 className="text-lg font-medium">
+          <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
             Conditions Générales d&apos;Utilisation
           </h2>
           <div className="flex space-x-2">
@@ -104,7 +104,20 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
           </div>
         </div>
 
-        <div className="border rounded-md p-4 bg-gray-50 min-h-[500px] max-h-[700px] overflow-y-auto">
+        <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-700 min-h-[500px] max-h-[700px] overflow-y-auto text-gray-900 dark:text-gray-100 cgu-content">
+          <style jsx global>{`
+            .cgu-content h1, .cgu-content h2 {
+              color: var(--heading-color, #2c3e50);
+            }
+            
+            .dark .cgu-content {
+              --text-color: #e1e1e1;
+              --background-color: #121212;
+              --heading-color: #81a1c1;
+              --border-color: #333;
+              --footer-color: #a0a0a0;
+            }
+          `}</style>
           <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
         </div>
       </div>

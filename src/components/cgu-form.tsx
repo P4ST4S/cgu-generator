@@ -64,7 +64,7 @@ const CGUForm = () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       alert(
-        "Une erreur est survenue lors de la génération des CGU. Veuillez réessayer.",
+        "Une erreur est survenue lors de la génération des CGU. Veuillez réessayer."
       );
     } finally {
       setIsSubmitting(false);
@@ -74,8 +74,10 @@ const CGUForm = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-white shadow-sm rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-4">Informations générales</h2>
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
+          <h2 className="text-lg font-medium mb-4 text-gray-900 dark:text-gray-100">
+            Informations générales
+          </h2>
 
           <Input name="siteName" placeholder="Nom du site" required />
 
@@ -107,8 +109,10 @@ const CGUForm = () => {
           />
         </div>
 
-        <div className="bg-white shadow-sm rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-4">Données collectées</h2>
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
+          <h2 className="text-lg font-medium mb-4 text-gray-900 dark:text-gray-100">
+            Données collectées
+          </h2>
 
           <CheckboxGroup
             name="collectedData"
@@ -124,8 +128,10 @@ const CGUForm = () => {
           />
         </div>
 
-        <div className="bg-white shadow-sm rounded-lg p-6">
-          <h2 className="text-lg font-medium mb-4">Services tiers</h2>
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
+          <h2 className="text-lg font-medium mb-4 text-gray-900 dark:text-gray-100">
+            Services tiers
+          </h2>
 
           <CheckboxGroup
             name="services"

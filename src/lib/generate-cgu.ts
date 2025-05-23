@@ -29,19 +29,38 @@ export function generateCGU(data: FormSchema): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --text-color: #333;
+      --background-color: #fff;
+      --heading-color: #2c3e50;
+      --border-color: #eee;
+      --footer-color: #7f8c8d;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-color: #e1e1e1;
+        --background-color: #121212;
+        --heading-color: #81a1c1;
+        --border-color: #333;
+        --footer-color: #a0a0a0;
+      }
+    }
+    
     body {
       font-family: Arial, sans-serif;
       line-height: 1.6;
-      color: #333;
+      color: var(--text-color);
+      background-color: var(--background-color);
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
     }
     h1, h2 {
-      color: #2c3e50;
+      color: var(--heading-color);
     }
     h1 {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
       padding-bottom: 10px;
     }
     h2 {
@@ -52,10 +71,10 @@ export function generateCGU(data: FormSchema): string {
     }
     .footer {
       margin-top: 50px;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--border-color);
       padding-top: 20px;
       font-size: 0.9em;
-      color: #7f8c8d;
+      color: var(--footer-color);
     }
   </style>
   <title>Conditions Générales d&apos;Utilisation - ${siteName}</title>

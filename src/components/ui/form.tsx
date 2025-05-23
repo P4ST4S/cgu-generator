@@ -22,15 +22,19 @@ export const FormField: React.FC<FormFieldProps> = ({
     <div className="mb-6">
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-1"
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
       >
         {label}
       </label>
       {children}
       {description && (
-        <p className="mt-1 text-sm text-gray-500">{description}</p>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          {description}
+        </p>
       )}
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 };
@@ -50,7 +54,7 @@ export const Input: React.FC<InputProps> = ({ name, ...props }) => {
     <FormField name={name} label={props.placeholder || name} error={error}>
       <input
         id={name}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
         {...register(name)}
         {...props}
       />
@@ -80,7 +84,7 @@ export const Select: React.FC<SelectProps> = ({
     <FormField name={name} label={label} error={error}>
       <select
         id={name}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
         {...register(name)}
         {...props}
       >
@@ -113,11 +117,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <input
         id={name}
         type="checkbox"
-        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        className="h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700"
         {...register(name)}
         {...props}
       />
-      <label htmlFor={name} className="ml-2 block text-sm text-gray-700">
+      <label
+        htmlFor={name}
+        className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+      >
         {label}
       </label>
     </div>
@@ -137,7 +144,7 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
 }) => {
   return (
     <div className="mb-6">
-      <span className="block text-sm font-medium text-gray-700 mb-2">
+      <span className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {label}
       </span>
       <div className="space-y-2">
