@@ -1,12 +1,12 @@
-import { z } from 'zod';
-import { ServiceType, Jurisdiction } from './types';
+import { z } from "zod";
+import { ServiceType, Jurisdiction } from "./types";
 
 export const formSchema = z.object({
   siteName: z.string().min(2, {
-    message: 'Le nom du site doit contenir au moins 2 caractères.',
+    message: "Le nom du site doit contenir au moins 2 caractères.",
   }),
   serviceType: z.nativeEnum(ServiceType, {
-    errorMap: () => ({ message: 'Veuillez sélectionner un type de service.' }),
+    errorMap: () => ({ message: "Veuillez sélectionner un type de service." }),
   }),
   collectedData: z.object({
     email: z.boolean().default(false),
@@ -24,7 +24,7 @@ export const formSchema = z.object({
     advertising: z.boolean().default(false),
   }),
   jurisdiction: z.nativeEnum(Jurisdiction, {
-    errorMap: () => ({ message: 'Veuillez sélectionner une juridiction.' }),
+    errorMap: () => ({ message: "Veuillez sélectionner une juridiction." }),
   }),
 });
 

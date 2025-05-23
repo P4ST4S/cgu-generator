@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import CGUViewer from '@/components/cgu-viewer';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import CGUViewer from "@/components/cgu-viewer";
 
 export default function ResultPage() {
-  const [htmlContent, setHtmlContent] = useState<string>('');
+  const [htmlContent, setHtmlContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     // Récupérer le HTML des CGU depuis le localStorage
-    const storedHtml = localStorage.getItem('cguHtml');
-    
+    const storedHtml = localStorage.getItem("cguHtml");
+
     if (!storedHtml) {
       // Si aucun contenu n'est trouvé, rediriger vers la page d'accueil
-      router.push('/');
+      router.push("/");
       return;
     }
-    
+
     setHtmlContent(storedHtml);
     setLoading(false);
   }, [router]);
@@ -39,11 +39,11 @@ export default function ResultPage() {
             Vos CGU sont prêtes !
           </h1>
           <p className="mt-2 text-gray-600">
-            Voici les Conditions Générales d&apos;Utilisation générées selon vos critères.
-            Vous pouvez les copier ou les télécharger en PDF.
+            Voici les Conditions Générales d&apos;Utilisation générées selon vos
+            critères. Vous pouvez les copier ou les télécharger en PDF.
           </p>
         </div>
-        
+
         <CGUViewer htmlContent={htmlContent} />
       </div>
     </div>
