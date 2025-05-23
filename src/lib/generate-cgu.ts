@@ -1,6 +1,7 @@
-import { CGUFormData, ServiceType, Jurisdiction } from "./types";
+import { ServiceType, Jurisdiction } from "./types";
+import { FormSchema } from "./schema";
 
-export function generateCGU(data: CGUFormData): string {
+export function generateCGU(data: FormSchema): string {
   const { siteName, serviceType, collectedData, services, jurisdiction } = data;
 
   const currentDate = new Date();
@@ -57,17 +58,17 @@ export function generateCGU(data: CGUFormData): string {
       color: #7f8c8d;
     }
   </style>
-  <title>Conditions Générales d'Utilisation - ${siteName}</title>
+  <title>Conditions Générales d&apos;Utilisation - ${siteName}</title>
 </head>
 <body>
-  <h1>Conditions Générales d'Utilisation - ${siteName}</h1>
+  <h1>Conditions Générales d&apos;Utilisation - ${siteName}</h1>
   
   <p><em>Dernière mise à jour : ${formattedDate}</em></p>
   
   <p>Bienvenue sur ${siteName}. Veuillez lire attentivement les présentes conditions générales d'utilisation qui régissent l'utilisation de notre ${serviceTypeText}.</p>
   
   <h2>1. Acceptation des Conditions</h2>
-  <p>En accédant ou en utilisant ${siteName}, vous acceptez d'être lié par ces Conditions Générales d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre service.</p>
+  <p>En accédant ou en utilisant ${siteName}, vous acceptez d&apos;être lié par ces Conditions Générales d&apos;Utilisation. Si vous n&apos;acceptez pas ces conditions, veuillez ne pas utiliser notre service.</p>
   
   <h2>2. Description du Service</h2>
   <p>${siteName} est un ${serviceTypeText} qui permet aux utilisateurs de ${getServiceDescription(
@@ -141,7 +142,7 @@ function getServiceDescription(serviceType: ServiceType): string {
 }
 
 function generateDataCollectionSection(
-  collectedData: CGUFormData["collectedData"]
+  collectedData: FormSchema["collectedData"]
 ): string {
   const collectedItems = [];
 
@@ -170,7 +171,7 @@ function generateDataCollectionSection(
   `;
 }
 
-function generateServicesSection(services: CGUFormData["services"]): string {
+function generateServicesSection(services: FormSchema["services"]): string {
   const serviceItems = [];
 
   if (services.stripe)

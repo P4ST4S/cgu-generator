@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { formSchema } from "@/lib/schema";
+import { formSchema, FormSchema } from "@/lib/schema";
 import { generateCGU } from "@/lib/generate-cgu";
 
 export async function POST(request: Request) {
@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Valider les données du formulaire
-    const validatedData = formSchema.parse(body);
+    const validatedData = formSchema.parse(body) as FormSchema;
 
     // Générer les CGU
     const cguHtml = generateCGU(validatedData);

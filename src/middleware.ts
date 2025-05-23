@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function middleware(_request: NextRequest) {
   // Pour l'instant, ce middleware ne fait rien de spécial
   // Il permet simplement de passer la requête au handler suivant
   return NextResponse.next();

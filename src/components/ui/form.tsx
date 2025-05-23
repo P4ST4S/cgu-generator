@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useFormContext, Controller } from 'react-hook-form';
+import React from "react";
+import { useFormContext } from "react-hook-form";
 
 interface FormFieldProps {
   name: string;
@@ -20,16 +20,17 @@ export const FormField: React.FC<FormFieldProps> = ({
 }) => {
   return (
     <div className="mb-6">
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-700 mb-1"
+      >
         {label}
       </label>
       {children}
       {description && (
         <p className="mt-1 text-sm text-gray-500">{description}</p>
       )}
-      {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
-      )}
+      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );
 };
@@ -39,7 +40,10 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input: React.FC<InputProps> = ({ name, ...props }) => {
-  const { register, formState: { errors } } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   const error = errors[name]?.message as string | undefined;
 
   return (
@@ -60,8 +64,16 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options: { value: string; label: string }[];
 }
 
-export const Select: React.FC<SelectProps> = ({ name, label, options, ...props }) => {
-  const { register, formState: { errors } } = useFormContext();
+export const Select: React.FC<SelectProps> = ({
+  name,
+  label,
+  options,
+  ...props
+}) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   const error = errors[name]?.message as string | undefined;
 
   return (
@@ -83,12 +95,17 @@ export const Select: React.FC<SelectProps> = ({ name, label, options, ...props }
   );
 };
 
-interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface CheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   name: string;
   label: string;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({ name, label, ...props }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({
+  name,
+  label,
+  ...props
+}) => {
   const { register } = useFormContext();
 
   return (
@@ -113,10 +130,16 @@ interface CheckboxGroupProps {
   options: { id: string; label: string }[];
 }
 
-export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ label, name, options }) => {
+export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
+  label,
+  name,
+  options,
+}) => {
   return (
     <div className="mb-6">
-      <span className="block text-sm font-medium text-gray-700 mb-2">{label}</span>
+      <span className="block text-sm font-medium text-gray-700 mb-2">
+        {label}
+      </span>
       <div className="space-y-2">
         {options.map((option) => (
           <Checkbox

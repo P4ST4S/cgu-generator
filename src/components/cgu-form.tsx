@@ -8,14 +8,14 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input, Select, CheckboxGroup } from "@/components/ui/form";
 import { formSchema, FormSchema } from "@/lib/schema";
-import { ServiceType, Jurisdiction, CGUFormData } from "@/lib/types";
+import { ServiceType, Jurisdiction } from "@/lib/types";
 
 const CGUForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const methods = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       siteName: "",
       serviceType: ServiceType.BLOG,
@@ -38,7 +38,7 @@ const CGUForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     setIsSubmitting(true);
 
     try {
@@ -64,7 +64,7 @@ const CGUForm = () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       alert(
-        "Une erreur est survenue lors de la génération des CGU. Veuillez réessayer."
+        "Une erreur est survenue lors de la génération des CGU. Veuillez réessayer.",
       );
     } finally {
       setIsSubmitting(false);
