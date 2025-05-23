@@ -27,3 +27,5 @@ export const formSchema = z.object({
     errorMap: () => ({ message: 'Veuillez sélectionner une juridiction.' }),
   }),
 });
+
+export type FormSchema = z.infer<typeof formSchema>;

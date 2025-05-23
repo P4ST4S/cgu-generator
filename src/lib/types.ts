@@ -13,31 +13,23 @@ export enum Jurisdiction {
 }
 
 export type CollectedData = {
-  email: boolean;
-  ip: boolean;
-  creditCard: boolean;
-  phone: boolean;
-  location: boolean;
-  browsing: boolean;
+  email: boolean | undefined;
+  ip: boolean | undefined;
+  creditCard: boolean | undefined;
+  phone: boolean | undefined;
+  location: boolean | undefined;
+  browsing: boolean | undefined;
 };
 
 export type Services = {
-  stripe: boolean;
-  googleAnalytics: boolean;
-  facebook: boolean;
-  aws: boolean;
-  advertising: boolean;
+  stripe: boolean | undefined;
+  googleAnalytics: boolean | undefined;
+  facebook: boolean | undefined;
+  aws: boolean | undefined;
+  advertising: boolean | undefined;
 };
 
 export type CGUFormData = {
-  siteName: string;
-  serviceType: ServiceType;
-  collectedData: CollectedData;
-  services: Services;
-  jurisdiction: Jurisdiction;
-};
-
-export type FormData = {
   siteName: string;
   serviceType: ServiceType;
   collectedData: CollectedData;

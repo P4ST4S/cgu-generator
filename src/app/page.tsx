@@ -16,7 +16,7 @@ export default function Home() {
             Générateur de CGU
           </h1>
           <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Créez facilement des Conditions Générales d'Utilisation
+            Créez facilement des Conditions Générales d&apos;Utilisation
             personnalisées pour votre site web ou application
           </p>
         </div>

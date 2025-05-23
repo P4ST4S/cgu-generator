@@ -7,15 +7,15 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input, Select, CheckboxGroup } from "@/components/ui/form";
-import { formSchema } from "@/lib/schema";
-import { ServiceType, Jurisdiction, FormData } from "@/lib/types";
+import { formSchema, FormSchema } from "@/lib/schema";
+import { ServiceType, Jurisdiction, CGUFormData } from "@/lib/types";
 
 const CGUForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const methods = useForm<FormData>({
-    resolver: zodResolver(formSchema) as any,
+  const methods = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       siteName: "",
       serviceType: ServiceType.BLOG,

@@ -39,7 +39,7 @@ export default function ResultPage() {
             Vos CGU sont prêtes !
           </h1>
           <p className="mt-2 text-gray-600">
-            Voici les Conditions Générales d'Utilisation générées selon vos critères.
+            Voici les Conditions Générales d&apos;Utilisation générées selon vos critères.
             Vous pouvez les copier ou les télécharger en PDF.
           </p>
         </div>
