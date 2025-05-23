@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import FeedbackButton from "@/components/FeedbackButton";
+
+// Variable d'environnement pour le domaine de tracking (peut être remplacée par un .env)
+const ANALYTICS_DOMAIN = process.env.ANALYTICS_DOMAIN || "plausible.io";
+const ANALYTICS_SITE_ID = process.env.ANALYTICS_SITE_ID || "cgu-generator.com";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,25 +49,56 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="h-full">
+    <html lang="fr" className="h-full" suppressHydrationWarning={true}>
       <head>
+        {/* Script de détection du thème - exécuté avant le chargement complet */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                function setTheme() {
-                  const theme = localStorage.getItem('theme') || 'light';
-                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                try {
+                  let persistedColorPreference = window.localStorage.getItem('theme');
+                  let hasPersistedPreference = typeof persistedColorPreference === 'string';
                   
-                  if (theme === 'dark' || (!theme && prefersDark)) {
-                    document.documentElement.classList.add('dark');
+                  if (hasPersistedPreference) {
+                    // If theme preference is stored, use that
+                    if (persistedColorPreference === 'dark') {
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                    }
                   } else {
-                    document.documentElement.classList.remove('dark');
+                    // If no theme preference is stored, check system preference
+                    let mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                    let hasMediaQueryPreference = typeof mediaQuery.matches === 'boolean';
+                    
+                    if (hasMediaQueryPreference) {
+                      if (mediaQuery.matches) {
+                        document.documentElement.classList.add('dark');
+                      } else {
+                        document.documentElement.classList.remove('dark');
+                      }
+                    }
                   }
+                } catch (e) {
+                  console.error('Error applying theme:', e);
                 }
-                
-                setTheme();
               })();
+            `,
+          }}
+        />
+
+        {/* Plausible Analytics - Script respectueux du RGPD */}
+        <script
+          defer
+          data-domain={ANALYTICS_SITE_ID}
+          src={`https://${ANALYTICS_DOMAIN}/js/script.js`}
+          data-api={`https://${ANALYTICS_DOMAIN}/api/event`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
             `,
           }}
         />
@@ -86,6 +122,9 @@ export default function RootLayout({
               </p>
             </div>
           </footer>
+
+          {/* Bouton de feedback */}
+          <FeedbackButton />
         </div>
       </body>
     </html>

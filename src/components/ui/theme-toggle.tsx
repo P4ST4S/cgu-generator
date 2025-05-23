@@ -4,21 +4,16 @@ import { useState, useEffect } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 
 export const ThemeToggle: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // Don't set initial state directly - we'll determine it in useEffect
+  const [isDarkMode, setIsDarkMode] = useState<boolean | undefined>(undefined);
+  const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage or system preference
+  // Initialize theme state after mount to avoid hydration mismatch
   useEffect(() => {
-    // Check if user has saved preference
-    const savedTheme = localStorage.getItem("theme");
-    
-    if (savedTheme === "dark" || 
-        (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    }
+    // Check the current theme from the HTML element class
+    const isDark = document.documentElement.classList.contains("dark");
+    setIsDarkMode(isDark);
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
@@ -33,11 +28,25 @@ export const ThemeToggle: React.FC = () => {
     }
   };
 
+  // Show a placeholder button while mounting to avoid hydration issues
+  if (!mounted) {
+    return (
+      <button
+        className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
+        aria-label="Chargement du thème..."
+      >
+        <div className="h-5 w-5" />
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={toggleTheme}
       className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
-      aria-label={isDarkMode ? "Activer le mode clair" : "Activer le mode sombre"}
+      aria-label={
+        isDarkMode ? "Activer le mode clair" : "Activer le mode sombre"
+      }
     >
       {isDarkMode ? (
         <SunIcon className="h-5 w-5" aria-hidden="true" />

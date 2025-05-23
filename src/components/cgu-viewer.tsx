@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import useAnalytics from "@/hooks/useAnalytics";
 
 interface CGUViewerProps {
   htmlContent: string;
@@ -11,6 +12,7 @@ interface CGUViewerProps {
 const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
   const router = useRouter();
   const [isDownloading, setIsDownloading] = useState(false);
+  const { trackEvent } = useAnalytics();
 
   const handleCopy = () => {
     // Créer un élément temporaire
@@ -24,10 +26,21 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
     navigator.clipboard
       .writeText(textContent)
       .then(() => {
+        // Suivre l'événement de copie réussie
+        trackEvent("cgu_copied", {
+          method: "clipboard",
+        });
+
         alert("Le contenu a été copié dans le presse-papier !");
       })
       .catch((err) => {
         console.error("Erreur lors de la copie : ", err);
+
+        // Suivre l'erreur
+        trackEvent("cgu_copy_error", {
+          error_message: err.message || "Unknown error",
+        });
+
         alert("Une erreur est survenue lors de la copie.");
       });
   };
@@ -36,6 +49,9 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
     setIsDownloading(true);
 
     try {
+      // Suivre le début du téléchargement
+      trackEvent("pdf_download_started");
+
       const response = await fetch("/api/download-pdf", {
         method: "POST",
         headers: {
@@ -66,8 +82,20 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
       // Nettoyer
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+
+      // Suivre le téléchargement réussi
+      trackEvent("pdf_download_success", {
+        file_type: "pdf",
+        file_size: Math.round(blob.size / 1024) + "KB",
+      });
     } catch (error) {
       console.error("Error downloading PDF:", error);
+
+      // Suivre l'erreur de téléchargement
+      trackEvent("pdf_download_error", {
+        error_message: error instanceof Error ? error.message : "Unknown error",
+      });
+
       alert("Une erreur est survenue lors du téléchargement du PDF.");
     } finally {
       setIsDownloading(false);
@@ -75,6 +103,9 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
   };
 
   const handleCreateNew = () => {
+    // Suivre l'événement de création de nouvelles CGU
+    trackEvent("create_new_cgu_clicked");
+
     // Effacer les CGU stockées
     localStorage.removeItem("cguHtml");
 
@@ -106,10 +137,11 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
 
         <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-700 min-h-[500px] max-h-[700px] overflow-y-auto text-gray-900 dark:text-gray-100 cgu-content">
           <style jsx global>{`
-            .cgu-content h1, .cgu-content h2 {
+            .cgu-content h1,
+            .cgu-content h2 {
               color: var(--heading-color, #2c3e50);
             }
-            
+
             .dark .cgu-content {
               --text-color: #e1e1e1;
               --background-color: #121212;
