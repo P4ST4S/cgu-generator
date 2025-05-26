@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 declare global {
   interface Window {
@@ -18,17 +18,16 @@ declare global {
  */
 export const useAnalytics = () => {
   const pathname = usePathname();
-
-  // Safely handle searchParams which requires Suspense boundary
-  const searchParamsObj = useSearchParams();
   const [searchParamsString, setSearchParamsString] = useState("");
 
-  // Update searchParamsString when searchParamsObj changes
+  // Update searchParamsString safely from window.location.search (client-side only)
   useEffect(() => {
-    if (searchParamsObj) {
-      setSearchParamsString(searchParamsObj.toString());
+    // Éviter d'utiliser useSearchParams pour ne pas avoir besoin de Suspense
+    // et pour permettre la génération statique sans erreur
+    if (typeof window !== 'undefined') {
+      setSearchParamsString(window.location.search);
     }
-  }, [searchParamsObj]);
+  }, []);
 
   // Suivre les changements de page
   useEffect(() => {
