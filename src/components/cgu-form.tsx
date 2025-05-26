@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input, Select, CheckboxGroup } from "@/components/ui/form";
 import { formSchema, FormSchema } from "@/lib/schema";
 import { ServiceType, Jurisdiction } from "@/lib/types";
+import useAnalytics from "@/hooks/useAnalytics";
 
 const CGUForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { trackEvent } = useAnalytics();
 
   const methods = useForm<FormSchema>({
     resolver: zodResolver(formSchema) as any,
@@ -42,6 +44,12 @@ const CGUForm = () => {
     setIsSubmitting(true);
 
     try {
+      // Suivre l'événement de début de génération
+      trackEvent("generate_cgu_started", {
+        service_type: data.serviceType,
+        jurisdiction: data.jurisdiction,
+      });
+
       const response = await fetch("/api/generate-cgu", {
         method: "POST",
         headers: {
@@ -53,6 +61,12 @@ const CGUForm = () => {
       const result = await response.json();
 
       if (result.success) {
+        // Suivre l'événement de génération réussie
+        trackEvent("generate_cgu_success", {
+          service_type: data.serviceType,
+          jurisdiction: data.jurisdiction,
+        });
+
         // Stocker le HTML des CGU dans le localStorage
         localStorage.setItem("cguHtml", result.html);
 
@@ -63,6 +77,12 @@ const CGUForm = () => {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+
+      // Suivre l'événement d'échec
+      trackEvent("generate_cgu_error", {
+        error_message: error instanceof Error ? error.message : "Unknown error",
+      });
+
       alert(
         "Une erreur est survenue lors de la génération des CGU. Veuillez réessayer."
       );

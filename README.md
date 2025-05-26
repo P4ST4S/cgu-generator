@@ -13,6 +13,8 @@ Une application SaaS complète permettant de générer des Conditions Générale
 - Copie du texte des CGU dans le presse-papier
 - Support du mode sombre/clair
 - Interface entièrement responsive
+- Système de tracking anonymisé respectueux du RGPD
+- Bouton de feedback permettant aux utilisateurs de donner leur avis
 
 ## Stack technique
 
@@ -22,6 +24,7 @@ Une application SaaS complète permettant de générer des Conditions Générale
 - Tailwind CSS pour un design moderne et responsive
 - Puppeteer pour la génération de PDF
 - HeroIcons pour les icônes SVG
+- Plausible Analytics pour les statistiques respectueuses du RGPD
 - Approche stateless (pas de base de données requise)
 
 ## Installation
@@ -51,6 +54,26 @@ Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur pour
   - `types.ts` : Types TypeScript pour les données du formulaire
   - `schema.ts` : Schémas de validation Zod
   - `generate-cgu.ts` : Logique de génération des CGU en HTML
+- `src/hooks/` : Hooks React personnalisés
+  - `useAnalytics.ts` : Hook pour le suivi des événements utilisateur
+
+## Configuration
+
+Le projet utilise des variables d'environnement pour configurer certaines fonctionnalités. Copiez le fichier `.env.example` vers `.env.local` et ajustez les variables selon vos besoins :
+
+```bash
+# Copier le fichier d'exemple
+cp .env.example .env.local
+
+# Éditer les variables
+nano .env.local
+```
+
+Variables d'environnement disponibles :
+
+- `ANALYTICS_DOMAIN` : Domaine du script Plausible Analytics (par défaut : "plausible.io")
+- `ANALYTICS_SITE_ID` : Identifiant de votre site dans Plausible Analytics
+- Variables pour l'envoi d'emails (optionnelles) : `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASSWORD`, `EMAIL_RECIPIENT`
 
 ## Développement
 
@@ -95,6 +118,38 @@ Cette application génère des CGU à titre indicatif uniquement. Pour une confo
 ## Licence
 
 MIT
+
+## Système de feedback par email
+
+Le générateur de CGU intègre un système de feedback permettant aux utilisateurs de soumettre leurs commentaires et suggestions :
+
+- **Bouton de feedback** : Présent sur toutes les pages, offrant une accessibilité constante
+- **Formulaire simple** : Nom (optionnel), email et message
+- **Notification par email** : Les feedbacks sont envoyés par email à l'administrateur du site
+- **Validation côté serveur** : Protection contre les abus et les données malformées
+
+Pour activer les notifications par email, configurez les variables suivantes dans votre fichier `.env.local` :
+
+```
+EMAIL_HOST=smtp.votreserveur.com
+EMAIL_PORT=587
+EMAIL_USER=votre@email.com
+EMAIL_PASSWORD=votremotdepasse
+EMAIL_RECIPIENT=destinataire@email.com
+```
+
+Cette fonctionnalité utilise Nodemailer pour l'envoi d'emails de manière sécurisée et fiable.
+
+## Système d'analytics respectueux du RGPD
+
+Cette application utilise [Plausible Analytics](https://plausible.io/), une solution d'analyse d'audience respectueuse de la vie privée :
+
+- **Sans cookies** : Ne nécessite pas de bannière de consentement
+- **Entièrement anonymisé** : Ne collecte aucune donnée personnelle
+- **RGPD / GDPR compliant** : Conforme aux réglementations européennes
+- **Léger** : Script de moins de 1 Ko, n'affecte pas les performances
+
+Les données d'analytics sont utilisées uniquement pour améliorer le service et comprendre comment les utilisateurs interagissent avec l'application.
 
 ## Avertissement
 

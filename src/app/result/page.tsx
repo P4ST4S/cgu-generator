@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CGUViewer from "@/components/cgu-viewer";
+import useAnalytics from "@/hooks/useAnalytics";
 
 export default function ResultPage() {
   const [htmlContent, setHtmlContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { trackEvent } = useAnalytics();
 
   useEffect(() => {
     // Récupérer le HTML des CGU depuis le localStorage
@@ -15,13 +17,19 @@ export default function ResultPage() {
 
     if (!storedHtml) {
       // Si aucun contenu n'est trouvé, rediriger vers la page d'accueil
+      trackEvent("result_page_no_content");
       router.push("/");
       return;
     }
 
     setHtmlContent(storedHtml);
     setLoading(false);
-  }, [router]);
+
+    // Suivre l'affichage réussi de la page de résultats
+    trackEvent("result_page_viewed", {
+      content_length: storedHtml.length,
+    });
+  }, [router, trackEvent]);
 
   if (loading) {
     return (
