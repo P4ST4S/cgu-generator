@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import FeedbackButton from "@/components/FeedbackButton";
+import { PaymentProvider } from "@/contexts/PaymentContext";
 
 // Variable d'environnement pour le domaine de tracking (peut être remplacée par un .env)
 const ANALYTICS_DOMAIN = process.env.ANALYTICS_DOMAIN || "plausible.io";
@@ -104,28 +105,38 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased h-full`}>
-        <div className="min-h-screen flex flex-col">
-          <header className="bg-white dark:bg-gray-800 shadow-sm">
-            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-              <h1 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-                Générateur de CGU
-              </h1>
-              <ThemeToggle />
-            </div>
-          </header>
-          <main className="flex-grow">{children}</main>
-          <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                © {new Date().getFullYear()} Générateur de CGU — Application
-                créée avec Next.js
-              </p>
-            </div>
-          </footer>
+        <PaymentProvider>
+          <div className="min-h-screen flex flex-col">
+            <header className="bg-white dark:bg-gray-800 shadow-sm">
+              <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                  <a href="/">Générateur de CGU</a>
+                </h1>
+                <div className="flex items-center space-x-4">
+                  <a
+                    href="/account"
+                    className="text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                  >
+                    Mon compte
+                  </a>
+                  <ThemeToggle />
+                </div>
+              </div>
+            </header>
+            <main className="flex-grow">{children}</main>
+            <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                  © {new Date().getFullYear()} Générateur de CGU — Application
+                  créée avec Next.js
+                </p>
+              </div>
+            </footer>
 
-          {/* Bouton de feedback */}
-          <FeedbackButton />
-        </div>
+            {/* Bouton de feedback */}
+            <FeedbackButton />
+          </div>
+        </PaymentProvider>
       </body>
     </html>
   );

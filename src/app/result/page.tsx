@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CGUViewer from "@/components/cgu-viewer";
 import useAnalytics from "@/hooks/useAnalytics";
+import Paywall from "@/components/Paywall";
+import { usePayment } from "@/contexts/PaymentContext";
 
 export default function ResultPage() {
   const [htmlContent, setHtmlContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { trackEvent } = useAnalytics();
+  const { hasPaid, setHasPaid } = usePayment();
 
   useEffect(() => {
     // Récupérer le HTML des CGU depuis le localStorage
@@ -30,6 +33,11 @@ export default function ResultPage() {
       content_length: storedHtml.length,
     });
   }, [router, trackEvent]);
+
+  const handleUnlock = () => {
+    setHasPaid(true);
+    trackEvent("paywall_unlocked");
+  };
 
   if (loading) {
     return (
@@ -72,7 +80,35 @@ export default function ResultPage() {
           </a>
         </div>
 
-        <CGUViewer htmlContent={htmlContent} />
+        {/* Afficher le contenu ou le paywall en fonction de l'état de paiement */}
+        {hasPaid ? (
+          <CGUViewer htmlContent={htmlContent} />
+        ) : (
+          <>
+            {/* Afficher un aperçu limité des CGU */}
+            <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 mb-6">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                Aperçu des CGU
+              </h2>
+              <div className="border rounded-md p-4 bg-gray-50 dark:bg-gray-700 h-64 overflow-hidden relative text-gray-900 dark:text-gray-100">
+                <div
+                  className="blur-sm"
+                  dangerouslySetInnerHTML={{
+                    __html: htmlContent.substring(0, 1000),
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-700 flex items-end justify-center pb-4">
+                  <p className="text-center font-medium text-blue-600 dark:text-blue-400">
+                    Débloquez pour voir l'intégralité des CGU
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Afficher le paywall */}
+            <Paywall onUnlock={handleUnlock} />
+          </>
+        )}
       </div>
     </div>
   );

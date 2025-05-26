@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import useAnalytics from "@/hooks/useAnalytics";
+import { usePayment } from "@/contexts/PaymentContext";
 
 interface CGUViewerProps {
   htmlContent: string;
@@ -13,8 +14,16 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
   const router = useRouter();
   const [isDownloading, setIsDownloading] = useState(false);
   const { trackEvent } = useAnalytics();
+  const { hasPaid, checkPaymentStatus } = usePayment();
 
   const handleCopy = () => {
+    // Vérifier si l'utilisateur a payé
+    if (!checkPaymentStatus()) {
+      alert("Vous devez débloquer les CGU pour les copier.");
+      trackEvent("paywall_copy_blocked");
+      return;
+    }
+
     // Créer un élément temporaire
     const tempElement = document.createElement("div");
     tempElement.innerHTML = htmlContent;
@@ -46,6 +55,13 @@ const CGUViewer: React.FC<CGUViewerProps> = ({ htmlContent }) => {
   };
 
   const handleDownloadPDF = async () => {
+    // Vérifier si l'utilisateur a payé
+    if (!checkPaymentStatus()) {
+      alert("Vous devez débloquer les CGU pour les télécharger.");
+      trackEvent("paywall_download_blocked");
+      return;
+    }
+
     setIsDownloading(true);
 
     try {
