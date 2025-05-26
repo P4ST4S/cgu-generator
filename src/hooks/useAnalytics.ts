@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 declare global {
@@ -18,7 +18,17 @@ declare global {
  */
 export const useAnalytics = () => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+
+  // Safely handle searchParams which requires Suspense boundary
+  const searchParamsObj = useSearchParams();
+  const [searchParamsString, setSearchParamsString] = useState("");
+
+  // Update searchParamsString when searchParamsObj changes
+  useEffect(() => {
+    if (searchParamsObj) {
+      setSearchParamsString(searchParamsObj.toString());
+    }
+  }, [searchParamsObj]);
 
   // Suivre les changements de page
   useEffect(() => {
@@ -27,7 +37,7 @@ export const useAnalytics = () => {
       // on déclenche un événement de page vue
       window.plausible("pageview");
     }
-  }, [pathname, searchParams]);
+  }, [pathname, searchParamsString]);
 
   // Fonction pour suivre des événements personnalisés
   const trackEvent = (eventName: string, props?: Record<string, any>) => {
