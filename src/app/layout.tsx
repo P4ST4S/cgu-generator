@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import FeedbackButton from "@/components/FeedbackButton";
+import { Analytics } from "@vercel/analytics/next";
 
 // Variable d'environnement pour le domaine de tracking (peut être remplacée par un .env)
 const ANALYTICS_DOMAIN = process.env.ANALYTICS_DOMAIN || "plausible.io";
@@ -126,6 +127,9 @@ export default function RootLayout({
           {/* Bouton de feedback */}
           <FeedbackButton />
         </div>
+
+        {/* Vercel Analytics */}
+        <Analytics />
       </body>
     </html>
   );
