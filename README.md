@@ -2,6 +2,8 @@
 
 Un site web SaaS moderne et professionnel spécialisé dans la génération automatique de Conditions Générales d'Utilisation et de Confidentialité.
 
+🌐 **Site en production** : [https://www.cgu-generator.com/](https://www.cgu-generator.com/)
+
 ## Caractéristiques du Design
 
 - **Design minimaliste et flat** avec un fond clair
