@@ -23,12 +23,8 @@
 *Clean HTML output with PDF download, clipboard copy, and print options*
 
 ### Dark Mode Support
-![Dark Mode](docs/screenshots/dark-mode.png)
+![Dark Mode](docs/screenshots/dark.png)
 *Seamless dark/light mode switching with system preference detection*
-
-### PDF Export Preview
-![PDF Export](docs/screenshots/pdf-preview.png)
-*Professional PDF generation with proper formatting and typography*
 
 ---
 
