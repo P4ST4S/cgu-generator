@@ -19,7 +19,7 @@ export default function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="#create"
+                href="/create"
                 className="px-8 py-4 bg-primary text-white rounded-full hover:scale-105 transition-transform font-medium text-lg text-center"
               >
                 Essayer gratuitement

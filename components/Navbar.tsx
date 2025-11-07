@@ -30,7 +30,7 @@ export default function Navbar() {
               Connexion
             </Link>
             <Link
-              href="#create"
+              href="/create"
               className="px-6 py-2.5 bg-primary text-white rounded-full hover:scale-105 transition-transform font-medium"
             >
               Créer mon document
