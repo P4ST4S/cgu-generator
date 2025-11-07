@@ -1,398 +1,123 @@
-# 📄 CGU Generator
+# CGUgen - Générateur de CGU Moderne
 
-> Complete SaaS application for generating custom Terms of Service (CGU/TOS) in seconds. Free, fast, and legally-informed.
+Un site web SaaS moderne et professionnel spécialisé dans la génération automatique de Conditions Générales d'Utilisation et de Confidentialité.
 
-🔗 **[Live Demo → cgu-generator.com](https://www.cgu-generator.com/)** 
+## Caractéristiques du Design
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-3.0-38bdf8?logo=tailwindcss)
-![Deployed](https://img.shields.io/badge/Deployed-Live-success?logo=vercel)
-![License](https://img.shields.io/badge/License-MIT-green)
+- **Design minimaliste et flat** avec un fond clair
+- **Palette de couleurs** : Turquoise (#1BAAA0) avec accents bleu-vert
+- **Typographie** : Inter (Google Fonts)
+- **Interface responsive** avec Tailwind CSS v4
+- **Animations subtiles** sur les interactions (hover scale 1.05)
+- **Icônes** : SVG inline style outline
 
----
+## Structure du Site
 
-## 📸 Screenshots
+### 1. Navbar (Fixe)
+- Logo minimal "CGUgen"
+- Liens de navigation : Fonctionnalités, Tarifs, À propos, Connexion
+- Bouton CTA "Créer mon document"
 
-### Multi-step Interactive Form
-![Form Interface](docs/screenshots/form.png)
-*Intelligent form with real-time validation and conditional fields based on service type*
+### 2. Hero Section
+- Grand titre accrocheur
+- Sous-titre explicatif
+- Deux CTA : "Essayer gratuitement" et "Voir la démo"
+- Illustration moderne d'un document
 
-### Generated CGU with Export Options
-![Result Page](docs/screenshots/result.png)
-*Clean HTML output with PDF download, clipboard copy, and print options*
+### 3. Section Fonctionnalités
+Quatre cartes avec icônes :
+- Personnalisation complète
+- Conforme au RGPD
+- Export PDF & HTML
+- Mises à jour automatiques
 
-### Dark Mode Support
-![Dark Mode](docs/screenshots/dark.png)
-*Seamless dark/light mode switching with system preference detection*
+### 4. Section Aperçu/Démo
+- Mockup du générateur (formulaire + aperçu live)
+- Interface split-screen
+- Prévisualisation en temps réel
 
----
+### 5. Section Tarifs
+Trois plans :
+- **Gratuit** : Pour découvrir et tester
+- **Pro** : Pour les professionnels (29€/mois)
+- **Entreprise** : Sur mesure
 
-## ✨ Features
+### 6. Section Témoignages
+- 3 avis clients avec avatars
+- Notes 5 étoiles
+- Statistiques (10k+ documents, 5k+ entreprises, 4.9/5)
 
-### 🎯 Core Functionality
-- **Smart Form Builder** - Multi-step wizard adapts to your service type
-- **4 Service Types** - Blog, E-commerce, SaaS, Mobile applications
-- **Multi-jurisdiction** - France, EU, US, International legal frameworks
-- **Instant Generation** - Generate complete CGU in <2 seconds
-- **Professional Export** - Download as PDF or copy HTML to clipboard
+### 7. Footer
+- Liens vers les pages légales (CGU, Politique de confidentialité)
+- Réseaux sociaux
+- Copyright
 
-### 🎨 User Experience
-- **Responsive Design** - Perfect experience on mobile, tablet, and desktop
-- **Dark/Light Mode** - System preference detection with manual override
-- **Form Persistence** - Never lose your progress (localStorage)
-- **One-click Actions** - Copy, download, or print with a single click
-- **Accessibility** - WCAG 2.1 compliant, keyboard navigation
+## Technologies Utilisées
 
-### 🔒 Privacy & Compliance
-- **GDPR Compliant** - Cookieless analytics with Plausible
-- **No Data Storage** - 100% stateless, your data never touches a database
-- **Privacy-first** - No tracking, no cookies, no personal data collection
-- **Transparent** - Open source, auditable code
+- **Framework** : Next.js 16.0.1 (App Router)
+- **React** : 19.2.0
+- **Styling** : Tailwind CSS v4
+- **Fonts** : Inter (Google Fonts)
+- **TypeScript** : Support complet
 
-### 🛠️ Technical Excellence
-- **Type-safe** - Full TypeScript coverage with Zod validation
-- **Server-side PDF** - Puppeteer-powered professional PDF generation
-- **Stateless Architecture** - Horizontally scalable, no state management
-- **Fast Performance** - Optimized bundle, <150KB JavaScript
-- **Email Feedback** - Built-in user feedback system with Nodemailer
+## Installation
 
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| **Framework** | Next.js 14 App Router | Server-side rendering, API routes |
-| **Language** | TypeScript | Type safety, better DX |
-| **Styling** | Tailwind CSS | Utility-first styling, responsive design |
-| **Forms** | React Hook Form + Zod | Form management, schema validation |
-| **PDF** | Puppeteer | Server-side PDF generation |
-| **Icons** | HeroIcons | Beautiful SVG icon library |
-| **Analytics** | Plausible | Privacy-first, GDPR-compliant analytics |
-| **Email** | Nodemailer | Feedback system notifications |
-| **Deployment** | Vercel | Edge functions, global CDN |
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 18+
-- npm or pnpm
-
-### Installation
 ```bash
-# Clone the repository
-git clone https://github.com/P4ST4S/cgu-generator.git
-cd cgu-generator
-
-# Install dependencies
-npm install
-# or
+# Installer les dépendances
 pnpm install
 
-# Copy environment variables
-cp .env.example .env.local
+# Lancer le serveur de développement
+pnpm dev
 
-# Start development server
-npm run dev
+# Builder pour la production
+pnpm build
+
+# Lancer en production
+pnpm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
+Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
 
----
+## Architecture
 
-## 📁 Project Architecture
 ```
-src/
-├── app/                    # Next.js 14 App Router
-│   ├── page.tsx           # Home page with form
-│   ├── result/            # Generated CGU display page
-│   └── api/               # API routes
-│       ├── generate/      # CGU generation endpoint
-│       ├── pdf/           # PDF download endpoint
-│       └── feedback/      # User feedback endpoint
-├── components/
-│   ├── ui/                # Reusable UI components
-│   │   ├── button.tsx
-│   │   ├── input.tsx
-│   │   ├── select.tsx
-│   │   └── textarea.tsx
-│   ├── form/              # Form-specific components
-│   │   ├── cgu-form.tsx
-│   │   └── form-steps.tsx
-│   └── feedback/          # Feedback widget
-├── lib/
-│   ├── types.ts           # TypeScript type definitions
-│   ├── schema.ts          # Zod validation schemas
-│   ├── generate-cgu.ts    # CGU generation logic
-│   └── utils.ts           # Helper functions
-└── hooks/
-    ├── useAnalytics.ts    # Plausible analytics hook
-    └── useTheme.ts        # Dark mode management
+/app
+  ├── layout.tsx       # Layout principal avec metadata
+  ├── page.tsx         # Page d'accueil assemblant tous les composants
+  └── globals.css      # Styles globaux et variables CSS
+
+/components
+  ├── Navbar.tsx       # Barre de navigation fixe
+  ├── Hero.tsx         # Section hero avec CTA
+  ├── Features.tsx     # Grille de fonctionnalités
+  ├── Demo.tsx         # Aperçu du générateur
+  ├── Pricing.tsx      # Cartes de tarifs
+  ├── Testimonials.tsx # Témoignages et stats
+  └── Footer.tsx       # Footer avec liens légaux
 ```
 
----
+## Palette de Couleurs
 
-## ⚙️ Configuration
+- **Primary** : #1BAAA0 (Turquoise)
+- **Accent** : #14968D (Turquoise foncé)
+- **Secondary** : #F5F7FA (Gris clair)
+- **Foreground** : #1a1a1a (Texte principal)
+- **Background** : #ffffff (Blanc)
 
-### Environment Variables
+## Prochaines Étapes
 
-Create a `.env.local` file in the root directory:
-```bash
-# Analytics (Optional - Plausible)
-NEXT_PUBLIC_ANALYTICS_DOMAIN=plausible.io
-NEXT_PUBLIC_ANALYTICS_SITE_ID=cgu-generator.com
+Ce site est prêt à être connecté à :
+- Une API d'IA pour la génération de CGU
+- Un système d'authentification
+- Une base de données pour stocker les documents
+- Un système de paiement pour les plans Pro et Entreprise
 
-# Email Notifications (Optional)
-EMAIL_HOST=smtp.example.com
-EMAIL_PORT=587
-EMAIL_USER=your@email.com
-EMAIL_PASSWORD=your-password
-EMAIL_RECIPIENT=feedback@cgu-generator.com
-```
+## Déploiement
 
-**Note:** The application works perfectly without any environment variables. Analytics and email features are optional enhancements.
+Le déploiement le plus simple se fait sur [Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
 
----
+Consultez la [documentation de déploiement Next.js](https://nextjs.org/docs/app/building-your-application/deploying) pour plus de détails.
 
-## 🎯 Use Cases
+## Licence
 
-### For Developers
-- Quickly generate CGU for side projects
-- Integrate legal documents into client projects
-- Understand legal requirements for web applications
-
-### For Startups
-- Free alternative to expensive legal services
-- Generate CGU before consulting a lawyer
-- Quick compliance for MVP launches
-
-### For Agencies
-- Offer as a value-add service to clients
-- White-label solution for legal document generation
-- Save time on boilerplate legal documents
-
----
-
-## 📈 Performance Metrics
-
-| Metric | Score | Details |
-|--------|-------|---------|
-| **Lighthouse Performance** | 95+ | Optimized assets, lazy loading |
-| **First Contentful Paint** | <1s | Critical CSS inline, code splitting |
-| **Time to Interactive** | <2s | Minimal JavaScript, efficient hydration |
-| **Bundle Size** | <150KB | Tree-shaking, dynamic imports |
-| **CGU Generation** | <2s | Efficient template rendering |
-| **PDF Generation** | ~3-5s | Server-side Puppeteer processing |
-
----
-
-## 💡 Technical Highlights
-
-### 1. Server-side PDF Generation
-```typescript
-// Using Puppeteer in Next.js API routes
-import puppeteer from 'puppeteer';
-
-export async function POST(request: Request) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
-  
-  const page = await browser.newPage();
-  await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-  
-  const pdf = await page.pdf({
-    format: 'A4',
-    margin: { top: '20mm', right: '20mm', bottom: '20mm', left: '20mm' }
-  });
-  
-  await browser.close();
-  return new Response(pdf, { headers: { 'Content-Type': 'application/pdf' } });
-}
-```
-
-### 2. Type-safe Form Validation
-```typescript
-// Zod schemas ensure type safety across the app
-const formSchema = z.object({
-  serviceType: z.enum(['blog', 'ecommerce', 'saas', 'mobile']),
-  jurisdiction: z.enum(['france', 'eu', 'us', 'international']),
-  companyName: z.string().min(1),
-  // ... 20+ fields with conditional validation
-}).refine(data => {
-  // Custom validation logic based on service type
-  if (data.serviceType === 'ecommerce') {
-    return data.paymentMethods !== undefined;
-  }
-  return true;
-});
-```
-
-### 3. Stateless Architecture
-- No database required
-- No session management
-- Pure computation based on form inputs
-- Horizontally scalable by design
-
-### 4. Privacy-first Analytics
-```typescript
-// Plausible integration without cookies
-useEffect(() => {
-  if (window.plausible) {
-    window.plausible('pageview');
-    window.plausible('Form Submitted', { 
-      props: { serviceType, jurisdiction } 
-    });
-  }
-}, []);
-```
-
----
-
-## 🚀 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. **One-click deploy:**
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/P4ST4S/cgu-generator)
-
-2. **Or via CLI:**
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
-
-### Other Platforms
-
-This app can be deployed on any platform supporting Next.js:
-- Netlify
-- AWS Amplify
-- Google Cloud Run
-- Self-hosted with Docker
-
----
-
-## 🧪 Development
-```bash
-# Development server
-npm run dev
-
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
-
----
-
-## 🎓 What I Learned
-
-Building this SaaS application taught me:
-
-### Frontend
-- ✅ Complex form state management with React Hook Form
-- ✅ Advanced TypeScript patterns with discriminated unions
-- ✅ Conditional form rendering based on user selections
-- ✅ Dark mode implementation with Tailwind CSS
-- ✅ Accessibility best practices (ARIA, keyboard navigation)
-
-### Backend
-- ✅ Next.js 14 App Router patterns and conventions
-- ✅ Server-side PDF generation with Puppeteer
-- ✅ API route design for serverless functions
-- ✅ Environment variable management for multi-environment deployment
-
-### Architecture
-- ✅ Stateless SaaS design for horizontal scalability
-- ✅ Type-safe schema validation with Zod
-- ✅ GDPR-compliant analytics integration
-- ✅ Performance optimization for Core Web Vitals
-
-### Product
-- ✅ User feedback loops and iteration
-- ✅ Legal document structure and requirements
-- ✅ Multi-jurisdiction compliance considerations
-- ✅ UX design for complex form wizards
-
----
-
-## ⚠️ Legal Disclaimer
-
-**Important:** This application generates Terms of Service for informational and educational purposes only. While the generated documents follow common legal patterns and best practices, they should **not be considered legal advice**.
-
-For production use, we strongly recommend:
-1. Reviewing the generated document with a qualified lawyer
-2. Customizing clauses to your specific business needs
-3. Ensuring compliance with local regulations
-4. Regular updates as laws and your business evolve
-
-The creators of this tool are not responsible for any legal issues arising from the use of generated documents.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-### How to contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📧 Contact & Links
-
-**Antoine ROSPARS** - Full-Stack Developer
-
-🌐 [Portfolio](https://antoinerospars.dev) • 💼 [LinkedIn](https://linkedin.com/in/antoinerospars) • 🐙 [GitHub](https://github.com/P4ST4S)
-
-**Project Links:**
-- 🔗 Live Demo: [cgu-generator.com](https://www.cgu-generator.com/)
-- 📦 Repository: [github.com/P4ST4S/cgu-generator](https://github.com/P4ST4S/cgu-generator)
-- 🐛 Report Bug: [Open an issue](https://github.com/P4ST4S/cgu-generator/issues)
-- 💡 Request Feature: [Open an issue](https://github.com/P4ST4S/cgu-generator/issues)
-
----
-
-## 🌟 Support
-
-If you find this project useful, please consider:
-- ⭐ Starring the repository
-- 🐦 Sharing on social media
-- 🔗 Linking from your project
-- ☕ [Buying me a coffee](https://buymeacoffee.com/antoinerospars)
-
----
-
-<div align="center">
-
-**Made with ❤️ by [Antoine ROSPARS](https://antoinerospars.dev)**
-
-*Helping developers and startups with legal compliance, one CGU at a time.*
-
-</div>
+© 2025 CGUgen – Tous droits réservés
