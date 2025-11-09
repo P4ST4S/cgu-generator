@@ -3,54 +3,52 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import CGUPreview from '@/components/CGUPreview';
-
-interface FormData {
-  companyName: string;
-  companyType: string;
-  email: string;
-  website: string;
-  address: string;
-  siret: string;
-  activityType: string;
-  hasDataCollection: boolean;
-  hasEcommerce: boolean;
-  hasNewsletter: boolean;
-  hasCookies: boolean;
-  hasUserAccounts: boolean;
-}
+import { FormInput } from '@/components/ui/FormInput';
+import { FormTextarea } from '@/components/ui/FormTextarea';
+import { FormSelect } from '@/components/ui/FormSelect';
+import { FormCheckbox } from '@/components/ui/FormCheckbox';
+import { useFormHandler } from '@/hooks/use-form-handler';
+import { CGUFormData, COMPANY_TYPES } from '@/types/form';
+import { formDataSchema } from '@/lib/validation';
+import { z } from 'zod';
 
 export default function CreatePage() {
-  const [formData, setFormData] = useState<FormData>({
-    companyName: '',
-    companyType: 'SAS',
-    email: '',
-    website: '',
-    address: '',
-    siret: '',
-    activityType: '',
-    hasDataCollection: true,
-    hasEcommerce: false,
-    hasNewsletter: false,
-    hasCookies: true,
-    hasUserAccounts: false,
-  });
-
   const [showPreview, setShowPreview] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: checked }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowPreview(true);
-  };
+  const { values, handleInputChange, handleCheckboxChange, handleSubmit } = useFormHandler<CGUFormData>({
+    initialValues: {
+      companyName: '',
+      companyType: 'SAS',
+      email: '',
+      website: '',
+      address: '',
+      siret: '',
+      activityType: '',
+      hasDataCollection: true,
+      hasEcommerce: false,
+      hasNewsletter: false,
+      hasCookies: true,
+      hasUserAccounts: false,
+    },
+    onSubmit: (data) => {
+      try {
+        formDataSchema.parse(data);
+        setErrors({});
+        setShowPreview(true);
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          const formattedErrors: Record<string, string> = {};
+          error.issues.forEach((issue) => {
+            if (issue.path[0]) {
+              formattedErrors[issue.path[0].toString()] = issue.message;
+            }
+          });
+          setErrors(formattedErrors);
+        }
+      }
+    },
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-secondary to-white">
@@ -92,130 +90,93 @@ export default function CreatePage() {
                 </h2>
               </div>
 
-              {/* Nom de l'entreprise */}
-              <div>
-                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom de l&apos;entreprise *
-                </label>
-                <input
-                  type="text"
-                  id="companyName"
-                  name="companyName"
-                  required
-                  value={formData.companyName}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="Ex: Ma Société SAS"
-                />
-              </div>
+              <FormInput
+                id="companyName"
+                name="companyName"
+                type="text"
+                label="Nom de l'entreprise"
+                required
+                value={values.companyName}
+                onChange={handleInputChange}
+                placeholder="Ex: Ma Société SAS"
+                error={errors.companyName}
+              />
 
-              {/* Type d'entreprise */}
-              <div>
-                <label htmlFor="companyType" className="block text-sm font-medium text-gray-700 mb-2">
-                  Forme juridique *
-                </label>
-                <select
-                  id="companyType"
-                  name="companyType"
-                  required
-                  value={formData.companyType}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                >
-                  <option value="SAS">SAS</option>
-                  <option value="SARL">SARL</option>
-                  <option value="EURL">EURL</option>
-                  <option value="SA">SA</option>
-                  <option value="SCI">SCI</option>
-                  <option value="Auto-entrepreneur">Auto-entrepreneur</option>
-                  <option value="Association">Association</option>
-                </select>
-              </div>
+              <FormSelect
+                id="companyType"
+                name="companyType"
+                label="Forme juridique"
+                required
+                value={values.companyType}
+                onChange={handleInputChange}
+                error={errors.companyType}
+              >
+                {COMPANY_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </FormSelect>
 
-              {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email de contact *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="contact@example.com"
-                />
-              </div>
+              <FormInput
+                id="email"
+                name="email"
+                type="email"
+                label="Email de contact"
+                required
+                value={values.email}
+                onChange={handleInputChange}
+                placeholder="contact@example.com"
+                error={errors.email}
+              />
 
-              {/* Site web */}
-              <div>
-                <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">
-                  Site web *
-                </label>
-                <input
-                  type="url"
-                  id="website"
-                  name="website"
-                  required
-                  value={formData.website}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="https://example.com"
-                />
-              </div>
+              <FormInput
+                id="website"
+                name="website"
+                type="url"
+                label="Site web"
+                required
+                value={values.website}
+                onChange={handleInputChange}
+                placeholder="https://example.com"
+                error={errors.website}
+              />
 
-              {/* Adresse */}
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                  Adresse du siège social *
-                </label>
-                <textarea
-                  id="address"
-                  name="address"
-                  required
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="123 Rue de la République&#10;75001 Paris"
-                />
-              </div>
+              <FormTextarea
+                id="address"
+                name="address"
+                label="Adresse du siège social"
+                required
+                value={values.address}
+                onChange={handleInputChange}
+                rows={3}
+                placeholder="123 Rue de la République&#10;75001 Paris"
+                error={errors.address}
+              />
 
-              {/* SIRET */}
-              <div>
-                <label htmlFor="siret" className="block text-sm font-medium text-gray-700 mb-2">
-                  Numéro SIRET *
-                </label>
-                <input
-                  type="text"
-                  id="siret"
-                  name="siret"
-                  required
-                  value={formData.siret}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="123 456 789 00012"
-                />
-              </div>
+              <FormInput
+                id="siret"
+                name="siret"
+                type="text"
+                label="Numéro SIRET"
+                required
+                value={values.siret}
+                onChange={handleInputChange}
+                placeholder="123 456 789 00012"
+                error={errors.siret}
+              />
 
-              {/* Type d'activité */}
-              <div>
-                <label htmlFor="activityType" className="block text-sm font-medium text-gray-700 mb-2">
-                  Type d&apos;activité *
-                </label>
-                <input
-                  type="text"
-                  id="activityType"
-                  name="activityType"
-                  required
-                  value={formData.activityType}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="Ex: E-commerce, SaaS, Services..."
-                />
-              </div>
+              <FormInput
+                id="activityType"
+                name="activityType"
+                type="text"
+                label="Type d'activité"
+                required
+                value={values.activityType}
+                onChange={handleInputChange}
+                placeholder="Ex: E-commerce, SaaS, Services..."
+                error={errors.activityType}
+              />
 
               {/* Options */}
               <div>
@@ -223,60 +184,40 @@ export default function CreatePage() {
                   Fonctionnalités du site
                 </h3>
                 <div className="space-y-3">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="hasDataCollection"
-                      checked={formData.hasDataCollection}
-                      onChange={handleCheckboxChange}
-                      className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary"
-                    />
-                    <span className="text-gray-700">Collecte de données personnelles</span>
-                  </label>
+                  <FormCheckbox
+                    name="hasDataCollection"
+                    label="Collecte de données personnelles"
+                    checked={values.hasDataCollection}
+                    onChange={handleCheckboxChange}
+                  />
 
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="hasEcommerce"
-                      checked={formData.hasEcommerce}
-                      onChange={handleCheckboxChange}
-                      className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary"
-                    />
-                    <span className="text-gray-700">E-commerce (vente en ligne)</span>
-                  </label>
+                  <FormCheckbox
+                    name="hasEcommerce"
+                    label="E-commerce (vente en ligne)"
+                    checked={values.hasEcommerce}
+                    onChange={handleCheckboxChange}
+                  />
 
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="hasNewsletter"
-                      checked={formData.hasNewsletter}
-                      onChange={handleCheckboxChange}
-                      className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary"
-                    />
-                    <span className="text-gray-700">Newsletter</span>
-                  </label>
+                  <FormCheckbox
+                    name="hasNewsletter"
+                    label="Newsletter"
+                    checked={values.hasNewsletter}
+                    onChange={handleCheckboxChange}
+                  />
 
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="hasCookies"
-                      checked={formData.hasCookies}
-                      onChange={handleCheckboxChange}
-                      className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary"
-                    />
-                    <span className="text-gray-700">Utilisation de cookies</span>
-                  </label>
+                  <FormCheckbox
+                    name="hasCookies"
+                    label="Utilisation de cookies"
+                    checked={values.hasCookies}
+                    onChange={handleCheckboxChange}
+                  />
 
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="hasUserAccounts"
-                      checked={formData.hasUserAccounts}
-                      onChange={handleCheckboxChange}
-                      className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary"
-                    />
-                    <span className="text-gray-700">Comptes utilisateurs</span>
-                  </label>
+                  <FormCheckbox
+                    name="hasUserAccounts"
+                    label="Comptes utilisateurs"
+                    checked={values.hasUserAccounts}
+                    onChange={handleCheckboxChange}
+                  />
                 </div>
               </div>
 
@@ -291,7 +232,7 @@ export default function CreatePage() {
 
           {/* Prévisualisation */}
           <div className="lg:sticky lg:top-24 h-fit">
-            <CGUPreview formData={formData} showPreview={showPreview} />
+            <CGUPreview formData={values} showPreview={showPreview} />
           </div>
         </div>
       </main>

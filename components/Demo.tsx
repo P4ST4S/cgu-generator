@@ -1,20 +1,19 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
+import { FormInput } from '@/components/ui/FormInput';
+import { useFormHandler } from '@/hooks/use-form-handler';
+import { DemoFormData } from '@/types/form';
 
 export default function Demo() {
-  const [formData, setFormData] = useState({
-    companyName: 'Test',
-    activityType: 'SaaS',
-    email: 'contact@example.com',
-    website: 'https://example.com',
+  const { values, handleInputChange } = useFormHandler<DemoFormData>({
+    initialValues: {
+      companyName: 'Test',
+      activityType: 'SaaS',
+      email: 'contact@example.com',
+      website: 'https://example.com',
+    },
   });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
 
   return (
     <section id="demo" className="py-20 px-6 lg:px-8 bg-gradient-to-b from-secondary to-white">
@@ -43,71 +42,51 @@ export default function Demo() {
 
                 {/* Form fields - Interactive */}
                 <div className="space-y-4">
-                  <div>
-                    <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
-                      Nom de l&apos;entreprise
-                    </label>
-                    <input
-                      type="text"
-                      id="companyName"
-                      name="companyName"
-                      value={formData.companyName}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                      placeholder="Ex: Ma Société"
-                    />
-                  </div>
+                  <FormInput
+                    id="companyName"
+                    name="companyName"
+                    type="text"
+                    label="Nom de l'entreprise"
+                    value={values.companyName}
+                    onChange={handleInputChange}
+                    placeholder="Ex: Ma Société"
+                  />
 
-                  <div>
-                    <label htmlFor="activityType" className="block text-sm font-medium text-gray-700 mb-2">
-                      Type d&apos;activité
-                    </label>
-                    <input
-                      type="text"
-                      id="activityType"
-                      name="activityType"
-                      value={formData.activityType}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                      placeholder="Ex: SaaS, E-commerce..."
-                    />
-                  </div>
+                  <FormInput
+                    id="activityType"
+                    name="activityType"
+                    type="text"
+                    label="Type d'activité"
+                    value={values.activityType}
+                    onChange={handleInputChange}
+                    placeholder="Ex: SaaS, E-commerce..."
+                  />
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Adresse email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                      placeholder="contact@example.com"
-                    />
-                  </div>
+                  <FormInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Adresse email"
+                    value={values.email}
+                    onChange={handleInputChange}
+                    placeholder="contact@example.com"
+                  />
 
-                  <div>
-                    <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">
-                      Site web
-                    </label>
-                    <input
-                      type="url"
-                      id="website"
-                      name="website"
-                      value={formData.website}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                      placeholder="https://example.com"
-                    />
-                  </div>
+                  <FormInput
+                    id="website"
+                    name="website"
+                    type="url"
+                    label="Site web"
+                    value={values.website}
+                    onChange={handleInputChange}
+                    placeholder="https://example.com"
+                  />
                 </div>
 
                 {/* Info text */}
                 <div className="pt-4 text-sm text-gray-600 bg-secondary/50 p-4 rounded-lg">
                   <p>
-                    ✨ Essayez de modifier les champs ci-dessus pour voir l&apos;aperçu se mettre à jour en temps réel !
+                    Essayez de modifier les champs ci-dessus pour voir l&apos;aperçu se mettre à jour en temps réel !
                   </p>
                 </div>
 
@@ -140,20 +119,20 @@ export default function Demo() {
                   </h1>
 
                   <div className="bg-secondary/50 p-4 rounded-lg space-y-2 text-sm">
-                    <p><strong>Société :</strong> {formData.companyName || '[Nom de votre entreprise]'}</p>
-                    <p><strong>Email :</strong> {formData.email || '[Votre email]'}</p>
-                    <p><strong>Site web :</strong> {formData.website || '[Votre site web]'}</p>
+                    <p><strong>Société :</strong> {values.companyName || '[Nom de votre entreprise]'}</p>
+                    <p><strong>Email :</strong> {values.email || '[Votre email]'}</p>
+                    <p><strong>Site web :</strong> {values.website || '[Votre site web]'}</p>
                   </div>
 
                   <div className="space-y-3">
                     <h2 className="text-lg font-semibold text-primary">1. Objet</h2>
                     <p className="text-gray-700 text-sm leading-relaxed">
                       Les présentes Conditions Générales d&apos;Utilisation ont pour objet de définir les modalités
-                      et conditions d&apos;utilisation des services proposés sur le site {formData.website || '[votre-site.com]'}.
+                      et conditions d&apos;utilisation des services proposés sur le site {values.website || '[votre-site.com]'}.
                     </p>
                     <p className="text-gray-700 text-sm leading-relaxed">
-                      Le Site est édité par {formData.companyName || '[Votre entreprise]'}.
-                      L&apos;activité principale de la société est : {formData.activityType || '[Votre activité]'}.
+                      Le Site est édité par {values.companyName || '[Votre entreprise]'}.
+                      L&apos;activité principale de la société est : {values.activityType || '[Votre activité]'}.
                     </p>
                   </div>
 
